@@ -76,10 +76,10 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request,  $task)
     {
         try{
-      $task= Task::findOrFail($id);
+      $task= Task::findOrFail($task);
 
       $task->title = $request['title'];
       $task->note = $request['note'];
@@ -100,8 +100,8 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $task)
     {
-        $deleted = Task::where('id', $id)->delete();
+        $deleted = Task::where('id', $task)->delete();
     }
 }
