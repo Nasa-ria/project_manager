@@ -15,7 +15,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return view ('index');
+        return view ('task.index');
     }
 
     /**
@@ -104,4 +104,12 @@ class TaskController extends Controller
     {
         $deleted = Task::where('id', $task)->delete();
     }
+
+    // public function strikethrough(string $task){
+    //     $task= Task::findorfail($task);
+
+    //     if($task){
+            
+    //     }
+    // }
 }

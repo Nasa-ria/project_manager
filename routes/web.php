@@ -17,8 +17,5 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('task/index','TaskController@index')->name('index');
-Route::post('task/store','TaskController@store')->name('store');
-Route::patch('task/update','TaskController@update')->name('upate');
-Route::delete('task/delete','TaskController@delete')->name('delete');
-Route::get('task/edit','TaskController@edit')->name('edit');
+Route::resource('task', TaskController::class);
+Route::get('/project/create', [ProjectController::class, 'create'])->name('create');
