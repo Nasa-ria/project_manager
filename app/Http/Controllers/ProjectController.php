@@ -7,8 +7,18 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+
+
+
+    public function index(){
+        $projects = Project::orderBy('id','desc')->paginate(10);
+
+      return view('project.index', compact('projects'));
+    }
+
+    
     public function create(){
-        return view( );
+        return view('project.form' );
     }
 
     public function store( Request $request){
