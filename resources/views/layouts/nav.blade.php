@@ -1,7 +1,6 @@
 
 <nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand">Home</a>
-  <a class="navbar-brand" href="/project/create">Create</a>
+  <a class="navbar-brand" href="/">Home</a>
   <form class="navbar-form navbar-left" action="/action_page.php">
   <div class="input-group">
     <input type="text" class="form-control" placeholder="Search">

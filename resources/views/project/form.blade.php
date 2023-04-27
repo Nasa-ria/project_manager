@@ -1,41 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
+@extends('layouts.index')
+@section("content")
 
 
-<div className="row border justify-content-center" >
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 mb-4">
+      <form class="mt-5">
+        <div class="form-group">
+        {{ csrf_field() }}
+          <label for="exampleFormControlInput1">Name:</label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Task manager">
+        </div>
+      <br>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Brief Note</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" ></textarea>
+        </div>
+      </form>
      
-     <h5 className= 'text-center' >TASK FROM</h5>
-     
-     <form>
-     <div className="form-group"  >
-     <label htmlFor="task">Task</label>
-     <input type="text" className="form-control" id="task" name='task' value={task}  />
-     </div>
-     <br/>
-     <div className="form-group">
-     <label htmlFor="task_date">Date</label>
-     <input type="date"  className="form-control" id="task_date" name='task_date' value={this.getFullDate(task_date)}/>
-     </div>
-     <br/>
-     <div className="form-group">
-     <label htmlFor="note">Note</label>
-     <textarea className="form-control" id="note"  type="text"  name= "note"  value={note}  ></textarea>
-     </div> 
-     <br/>
-     {(this.props.action ==='add' || this.props.action ==='edit'?( <button type="button" onClick={this.handleSubmit} className="btn btn-outline-primary"  > Save</button>):"")}
-     </form>
-     </div>
+    </div>
   </div>
+</div>
 
 
-
-</body>
-</html>
+@endsection
