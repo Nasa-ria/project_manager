@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('note');
             $table->integer('priority')->default('1');
+            $table->unsignedBigInteger('project_id');          
             $table->timestamps();
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
         });
     }
 
@@ -26,5 +28,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('tasks');
+     
     }
 };
+ 

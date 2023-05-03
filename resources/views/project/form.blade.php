@@ -2,22 +2,21 @@
 @section("content")
 
 
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8 mb-4">
-      <form class="mt-5">
-        <div class="form-group">
-        {{ csrf_field() }}
-          <label for="exampleFormControlInput1">Name:</label>
-          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Task manager">
-        </div>
+<div class="container">     
+    <form  class="mt-5" action="{{ route('store-form') }}" method="post" >
+         @csrf
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" name="name" placeholder="Task manager" required>
       <br>
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Brief Note</label>
-          <textarea class="form-control" id="exampleFormControlTextarea1" ></textarea>
-        </div>
+      <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+      </div>
+      
       </form>
-     
+    
+
+      </div>
+
     </div>
   </div>
 </div>

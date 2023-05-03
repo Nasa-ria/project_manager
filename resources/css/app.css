@@ -7,26 +7,27 @@
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
-    /* background-color: #777; */
-    color:black;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
-  }
-  
-  .active, .collapsible:hover {
-    background-color: #d8d3d318;
-  }
-  
-  .content {
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    background-color: #f1f1f1;
+  background-color: #c4740b;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  width: 10em;
+}
+
+.active, .collapsible:hover {
+  background-color: #b15804;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #c5852449;
   }
 
   .btn_create{

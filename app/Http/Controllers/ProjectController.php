@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,14 @@ class ProjectController extends Controller
 
 
 
-    public function index(){
-        $projects = Project::orderBy('id','desc')->paginate(10);
-
+    public function index(Request $request ){
+        $projects = Project::orderBy('id','desc')->get();
+        foreach ($projects as $project) {
+            // $id = $project->id
+       
+       $sub_tasks = Task::where('project_id', '=', $project->id)->orderBy('priority','desc')->get();
+           $project->sub_tasks = $sub_tasks;
+        }
       return view('project.index', compact('projects'));
     }
 
@@ -25,10 +31,9 @@ class ProjectController extends Controller
         $data= $request->validate([
             'name'=>'required',
           
-       
         ]);
         $project=Project::create($data);
-        dd($project);
+        return back();
     }
 
     public function update(Request $request ,Project $project){

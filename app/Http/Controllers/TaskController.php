@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -14,24 +15,18 @@ class TaskController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index()
-    {
-        return view ('task.view');
-    }
+      public function index(){
+        return view('task.view');
+      }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(){
-         try{
-        return view('create');
-    }
-    catch(ModelNotFoundException $err){
-        //redirect to your error page
-        return  $err;
-    }
-    
-          
+    public function create()
+    {
+        $projects = Project::all();
+       return view('task.form',['projects'=>$projects]);
+  
     }
 
     /**
@@ -39,15 +34,15 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request ->all());
         $data= $request->validate([
             'title'=>'required',
-            'note'=>'required',
-            'priority'=>'required',
-            'duration'=>'required',
-       
+            'note'=>'required', 
+            'project_id'=>'required'      
         ]);
         $task=Task::create($data);
-        dd($task);
+        return $task;
+       
     }
 
     /**
@@ -106,11 +101,6 @@ class TaskController extends Controller
         $deleted = Task::where('id', $task)->delete();
     }
 
-    // public function strikethrough(string $task){
-    //     $task= Task::findorfail($task);
+   
 
-    //     if($task){
-            
-    //     }
-    // }
 }
