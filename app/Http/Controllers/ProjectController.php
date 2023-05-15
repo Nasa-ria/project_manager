@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Input\Input;
 
 class ProjectController extends Controller
 {
@@ -67,6 +68,20 @@ class ProjectController extends Controller
       return back();
     }
 
+
+    public function search(Request $request){
+        $q = (Input::get('q'));
+        if($q != ''){
+            $data =Project::where('name','like','%'.$q.'%')->paginate(5)->setpath('');
+            $data->appends(array(
+               'q' => Input::get('q'),
+            ));
+            if(count($data)>0){
+                return $data;
+            }
+            return "No Results Found!";
+        }
+    }
     public function destroy(string $id)
     {
         $deleted = Project::where('id', '=',$id)->delete();
