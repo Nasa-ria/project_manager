@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('note');
-            $table->integer('priority')->default('1');
+            $table->integer('priority')->unique();
             $table->unsignedBigInteger('project_id');          
             $table->timestamps();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

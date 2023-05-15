@@ -22,6 +22,17 @@ class ProjectController extends Controller
       return view('project.index', compact('projects'));
     }
 
+
+    public function SingleProject(string $id){
+        $project= Project::findorfail($id);
+        $sub_tasks = Task::where('project_id', '=', $project->id)->orderBy('priority', 'desc')->get();
+
+        // $project->sub_tasks = $sub_tasks;
+     
+        return view('project.SingleProject', compact('project', 'sub_tasks'));
+
+        
+    }
     
     public function create(){
         return view('project.form' );
@@ -36,16 +47,29 @@ class ProjectController extends Controller
         return back();
     }
 
-    public function update(Request $request ,Project $project){
-        $project= Project::findOrFail($project);
+    public function edit(string $id)
+    {
+        
+            //Find the user object from model if it exists
+            $project= Project::findOrFail($id);
+            //Redirect to edit user form with the user info found above.
+            return view('project.edit',['project'=>$project]);
+        
+   
+        
+    }
+    public function update(Request $request ,$id){
+        $project= Project::findOrFail($id);
 
-      $project->title = $request['title'];
+      $project->name = $request['name'];
       //Save/update task.
       $project->save();
+      return back();
     }
 
-    public function destroy(string $project)
+    public function destroy(string $id)
     {
-        $deleted = Project::where('id', $project)->delete();
+        $deleted = Project::where('id', '=',$id)->delete();
+        return back();
     }
 }

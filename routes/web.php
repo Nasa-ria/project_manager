@@ -16,15 +16,18 @@ use App\Http\Controllers\ProjectController;
 */
 Route::get('/', [ProjectController::class, 'index'])->name('home');
 Route::get('/project/create',[ProjectController::class,'create'])->name('create');
-Route::get('/project/edit/{$project}', [ProjectController::class, 'index'])->name('edit');
+Route::get('/project/SingleProject/{id}',[ProjectController::class,'SingleProject'])->name('SingleProject');
+Route::get('/project/edit/{id}', [ProjectController::class, 'edit'])->name('edit');
+Route::post('/project/update/{id}', [ProjectController::class, 'update'])->name('update');
 Route::post('/project/store', [ProjectController::class, 'store'])->name('store-form');
-Route::delete('/project/delete/{$project}', [ProjectController::class, 'index'])->name('delete');
+Route::delete('/project/delete/{id}', [ProjectController::class, 'destroy'])->name('delete');
 
 // Route::resource('task', TaskController::class);
 Route::get('/task/create', [TaskController::class, 'create'])->name('task.create');
 Route::post('/task/store', [TaskController::class, 'store'])->name('task.store');
 Route::post('/task/index', [TaskController::class, 'index'])->name('task.index');
-Route::get('/task/edit/{$task}', [TaskController::class, 'edit'])->name('task-edit');
-Route::delete('/task/delete/{$task}', [TaskController::class, 'delete'])->name('task-delete');
+Route::get('/task/edit/{id}', [TaskController::class, 'edit'])->name('task-edit');
+Route::post('/task/update/{id}', [TaskController::class, 'Update'])->name('task-update');
+Route::delete('/task/delete/{task}', [TaskController::class, 'delete'])->name('task-delete');
 
 

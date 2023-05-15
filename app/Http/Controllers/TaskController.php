@@ -40,6 +40,9 @@ class TaskController extends Controller
             'note'=>'required', 
             'project_id'=>'required'      
         ]);
+        
+        $data['priority']=Task::all()->count() + 1;
+
         $task=Task::create($data);
         return $task;
        
@@ -62,7 +65,7 @@ class TaskController extends Controller
             //Find the user object from model if it exists
             $task= Task::findOrFail($id);
             //Redirect to edit user form with the user info found above.
-            return view('add',['task'=>$task]);
+            return view('task.edit',['task'=>$task]);
         }
         catch(ModelNotFoundException $err){
             //redirect to your error page
@@ -72,17 +75,17 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,  $task)
+    public function update(Request $request,  $id)
     {
         try{
-      $task= Task::findOrFail($task);
+      $task= Task::findOrFail($id);
 
       $task->title = $request['title'];
       $task->note = $request['note'];
-      $task->priority = $request['priority'];
-      $task->duration = $request['duration'];
+      
       //Save/update task.
       $task->save();
+      return back();
            //redirect to somewhere?
     }
     catch(ModelNotFoundException $err){
