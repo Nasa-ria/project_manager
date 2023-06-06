@@ -21,6 +21,7 @@ Route::get('/project/edit/{id}', [ProjectController::class, 'edit'])->name('edit
 Route::post('/project/update/{id}', [ProjectController::class, 'update'])->name('update');
 Route::post('/project/store', [ProjectController::class, 'store'])->name('store-form');
 Route::delete('/project/delete/{id}', [ProjectController::class, 'destroy'])->name('delete');
+Route::get('/search/{term}', [ProjectController::class, 'search'])->name('search');
 
 // Route::resource('task', TaskController::class);
 Route::get('/task/create', [TaskController::class, 'create'])->name('task.create');
@@ -28,6 +29,6 @@ Route::post('/task/store', [TaskController::class, 'store'])->name('task.store')
 Route::post('/task/index', [TaskController::class, 'index'])->name('task.index');
 Route::get('/task/edit/{id}', [TaskController::class, 'edit'])->name('task-edit');
 Route::post('/task/update/{id}', [TaskController::class, 'Update'])->name('task-update');
-Route::delete('/task/delete/{task}', [TaskController::class, 'delete'])->name('task-delete');
+Route::delete('/task/delete/{id}', [TaskController::class, 'destroy'])->name('task-delete');
 
 

@@ -44,7 +44,12 @@ class TaskController extends Controller
         $data['priority']=Task::all()->count() + 1;
 
         $task=Task::create($data);
-        return $task;
+        $id=$task->project_id;
+
+        // redirecting to a path the has has id
+        return redirect()->route('SingleProject', $id);
+
+      
        
     }
 
@@ -61,23 +66,17 @@ class TaskController extends Controller
      */
     public function edit(string $id)
     {
-        try{
+     
             //Find the user object from model if it exists
             $task= Task::findOrFail($id);
             //Redirect to edit user form with the user info found above.
             return view('task.edit',['task'=>$task]);
-        }
-        catch(ModelNotFoundException $err){
-            //redirect to your error page
-            return $err;
-        }
     }
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request,  $id)
     {
-        try{
       $task= Task::findOrFail($id);
 
       $task->title = $request['title'];
@@ -85,13 +84,11 @@ class TaskController extends Controller
       
       //Save/update task.
       $task->save();
-      return back();
-           //redirect to somewhere?
-    }
-    catch(ModelNotFoundException $err){
-        //Show error page
-        return $err;
-    }  
+      
+        return back();
+
+    
+  
       }
 
     
@@ -99,9 +96,14 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $task)
+    public function destroy(string $id)
     {
-        $deleted = Task::where('id', $task)->delete();
+        Task::destroy($id);
+       // redirecting to a path the has has 
+       return redirect()->back();
+        
+
+      
     }
 
    

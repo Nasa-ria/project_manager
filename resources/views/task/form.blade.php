@@ -11,7 +11,7 @@
     <select name="project_id" class="form-control custom-select">
       <option value="">Select project</option>
       @foreach($projects as $project)
-      @dump($projects)
+      <!-- @dump($projects) -->
 
         <option value="{{ $project->id }}" selected >{{ $project->name }}</option>
       @endforeach
@@ -24,7 +24,7 @@
     <br>
     <div class="form-group">
       <label for="note">Brief Note</label>
-      <textarea type="text" class="form-control w-100 h-6" name="note" row='250' required></textarea>
+      <textarea type="text" class="form-control w-100 h-6" name="note"  required></textarea>
     </div>
 
     <br>

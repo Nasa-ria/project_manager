@@ -1,9 +1,9 @@
 
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand" href="/">Home</a>
-  <form class="navbar-form navbar-left" action="/action_page.php">
+  <form class="navbar-form navbar-left" action="{{ route('search', ['term' => 'task']) }}" method="GET">
   <div class="input-group">
-    <input type="text" class="form-control"  name="q" placeholder="Search">
+    <input type="text" class="form-control"  name="search" placeholder="Search">
     <div class="input-group-btn">
       <button class="btn btn-default" type="submit">
         <i class="bi bi-search"></i>

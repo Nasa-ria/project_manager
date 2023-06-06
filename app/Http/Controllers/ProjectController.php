@@ -6,6 +6,8 @@ use App\Models\Task;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Input\Input;
+use Illuminate\Support\Facades\Route;
+
 
 class ProjectController extends Controller
 {
@@ -14,12 +16,12 @@ class ProjectController extends Controller
 
     public function index(Request $request ){
         $projects = Project::orderBy('id','desc')->get();
-        foreach ($projects as $project) {
-            // $id = $project->id
+    //     foreach ($projects as $project) {
+    //         // $id = $project->id
        
-       $sub_tasks = Task::where('project_id', '=', $project->id)->orderBy('priority','desc')->get();
-           $project->sub_tasks = $sub_tasks;
-        }
+    //    $sub_tasks = Task::where('project_id', '=', $project->id)->orderBy('priority','desc')->get();
+    //        $project->sub_tasks = $sub_tasks;
+    //     }
       return view('project.index', compact('projects'));
     }
 
@@ -27,8 +29,6 @@ class ProjectController extends Controller
     public function SingleProject(string $id){
         $project= Project::findorfail($id);
         $sub_tasks = Task::where('project_id', '=', $project->id)->orderBy('priority', 'desc')->get();
-
-        // $project->sub_tasks = $sub_tasks;
      
         return view('project.SingleProject', compact('project', 'sub_tasks'));
 
@@ -45,7 +45,7 @@ class ProjectController extends Controller
           
         ]);
         $project=Project::create($data);
-        return back();
+        return  redirect('/')->with ('message','your project has been created.');
     }
 
     public function edit(string $id)
@@ -65,26 +65,36 @@ class ProjectController extends Controller
       $project->name = $request['name'];
       //Save/update task.
       $project->save();
-      return back();
+     return  redirect('/')->with ('message','your project has been update successfully.');
     }
 
 
-    public function search(Request $request){
-        $q = (Input::get('q'));
-        if($q != ''){
-            $data =Project::where('name','like','%'.$q.'%')->paginate(5)->setpath('');
-            $data->appends(array(
-               'q' => Input::get('q'),
-            ));
-            if(count($data)>0){
-                return $data;
+    public function search(Request $request, $term){
+
+            dd($term);
+            // $routeName = Route::current()->getName();
+            dd($request->all());
+            //get the request the user is passing
+            $search = $request->input('search');
+
+            $url = 
+            //if you get the request, search in the model 
+            $project = Project::where('name', 'ilike', "%" . $search . "%" ) ->get();
+            if( $project->count() > 0){
+                return  $project ;
+            }else{
+                return response()->json([
+                    "message" => "No results found"
+                ]);
             }
-            return "No Results Found!";
         }
-    }
+    
+
+    
     public function destroy(string $id)
     {
-        $deleted = Project::where('id', '=',$id)->delete();
-        return back();
+        // $deleted = Project::where('id', '=',$id);
+         Project::destroy($id);
+         return redirect()->back();
     }
 }
