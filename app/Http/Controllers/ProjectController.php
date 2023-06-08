@@ -15,7 +15,8 @@ class ProjectController extends Controller
 
 
     public function index(Request $request ){
-        $projects = Project::orderBy('id','desc')->get();
+        // $projects = Project::orderBy('id','desc')->get();
+        $projects = Project::all();
     //     foreach ($projects as $project) {
     //         // $id = $project->id
        

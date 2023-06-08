@@ -7,11 +7,19 @@
     <p class="btn_create"><a class="a_create" href="{{ route('task.create')}}">Create Task</a></p>
     <p class="heading">Task(s)</p>
     <!-- (A) LOAD CSS + JS -->
+
+   
     <script src="sort-list.js"></script>
     <!-- (B) THE LIST -->
+   
+    
     <ul id="sortlist">
       @foreach ($sub_tasks as $sub_task)
-      <li> {{ $sub_task->priority}} . {{ $sub_task->title }} : {{ $sub_task->note }}
+   
+      <li>   
+         <input type="checkbox" class="cbox4" value="fourth_checkbox">
+        <label class="cbox4">
+          {{ $sub_task->priority}} . {{ $sub_task->title }} : {{ $sub_task->note }}
         <span class="crud_task">
           <a class=" a_link" href="{{ route('task-edit',$sub_task->id)}}">Edit </a>
           <form action="{{ route('task-delete',$sub_task->id) }}" method="POST">
@@ -20,20 +28,26 @@
             <button class="btn_delete">Remove</button>
           </form>
         </span>
+      </label>
       </li>
+ 
 
       @endforeach
-    </ul>
+    </ul> 
+ 
     <!-- (C) CREATE SORTABLE LIST -->
-    <script>
+     <script>
       slist(document.getElementById("sortlist"));
     </script>
 
   </div>
 </div>
 
-@endsection
+<script src='js/jquery-sortable.js'></script>
 
+
+
+@endsection
 
 
 
@@ -109,4 +123,13 @@
       };
     }
   }
+
+
+
+
+
+  
+ 
+
+
 </script>
