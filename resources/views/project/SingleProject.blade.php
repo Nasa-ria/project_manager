@@ -12,14 +12,16 @@
     <script src="sort-list.js"></script>
     <!-- (B) THE LIST -->
    
-    
-    <ul id="sortlist">
+
+    <ul id="sortlist"   >
       @foreach ($sub_tasks as $sub_task)
    
-      <li>   
-         <input type="checkbox" class="cbox4" value="fourth_checkbox">
+      <li  >   
+         <input type="checkbox" class="cbox4 " value="fourth_checkbox">
         <label class="cbox4">
-          {{ $sub_task->priority}} . {{ $sub_task->title }} : {{ $sub_task->note }}
+       
+       {{ $sub_task->priority}} . {{ $sub_task->title }} : {{ $sub_task->note }}
+       <p id="completedMessage" class="completed-text">Completed!</p> 
         <span class="crud_task">
           <a class=" a_link" href="{{ route('task-edit',$sub_task->id)}}">Edit </a>
           <form action="{{ route('task-delete',$sub_task->id) }}" method="POST">
@@ -34,6 +36,7 @@
 
       @endforeach
     </ul> 
+   
  
     <!-- (C) CREATE SORTABLE LIST -->
      <script>
@@ -43,7 +46,8 @@
   </div>
 </div>
 
-<script src='js/jquery-sortable.js'></script>
+
+
 
 
 
@@ -126,10 +130,18 @@
 
 
 
+  function toggleCompleted() {
+            // toggleStrikethrough();
+            toggleDisplay();
+        }
 
+        // function toggleStrikethrough() {
+        //     var textElement = document.getElementById("myText");
+        //     textElement.classList.toggle("completed");
+        // }
 
-  
- 
-
-
+        function toggleDisplay() {
+            var completedMessage = document.getElementById("completedMessage");
+            completedMessage.style.display = completedMessage.style.display === "none" ? "block" : "none";
+        }
 </script>

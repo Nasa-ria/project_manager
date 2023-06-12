@@ -70,25 +70,39 @@ class ProjectController extends Controller
     }
 
 
-    public function search(Request $request, $term){
+    public function search(Request $request){
+        $search = $request->input('search');
+        // $search = $request->input('query');
 
-            dd($term);
-            // $routeName = Route::current()->getName();
-            dd($request->all());
-            //get the request the user is passing
-            $search = $request->input('search');
-
-            $url = 
-            //if you get the request, search in the model 
-            $project = Project::where('name', 'ilike', "%" . $search . "%" ) ->get();
-            if( $project->count() > 0){
-                return  $project ;
-            }else{
-                return response()->json([
-                    "message" => "No results found"
-                ]);
-            }
+        $result = $this->searchProject($search);
+        if (!$result) {
+            $result = $this->searchTask($search);
         }
+
+        if ($result) {
+            return response()->json(['result' => $result]);
+        } else {
+            return response()->json(['message' => 'No result found.']);
+        }
+    }
+
+    private function searchProject($search)
+    {
+        // Search logic for DB_A goes here
+        // Replace this with your actual search logic
+        $result = Project::where('name', 'ilike', "%" . $search . "%" ) ->get();
+
+        return $result;
+    }
+    
+    private function searchTask($search)
+    {
+        // Search logic for DB_A goes here
+        // Replace this with your actual search logic
+        $result = Task::where('title', 'ilike', "%" . $search . "%" ) ->get();
+
+        return $result;
+    }
     
 
     

@@ -20,9 +20,11 @@
 
   .a_link{
     text-decoration: none;
-    margin-top: 2em;
+    /* display: flex; */
+  /* flex-direction:row; */
+  /* justify-content: end; */
   }
-.crud{
+.crud {
   display: flex;
   flex-direction:row;
   justify-content: end;
@@ -66,15 +68,16 @@
   border: 1px solid #607edf;
 }
 
-li {
+.list {
   cursor: pointer;
+  /* margin-top: 5em; */
 }
 
 .crossOut {
   text-decoration: line-through;
 }
 .cbox4{
-  margin-bottom: 1em;
+  margin-top:1em;
 }
 #cbox4:checked + label {
   color:blue;
@@ -85,3 +88,9 @@ input[type=checkbox]:checked + label {
   color:red;
   text-decoration: line-through;
 } 
+
+.completed-text {
+  display: none;
+  color: green;
+  font-weight: bold;
+}
