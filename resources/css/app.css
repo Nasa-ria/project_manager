@@ -6,15 +6,10 @@
 }
 
 /* Style the button that is used to open and close the collapsible content */
-
-  .btn_create{
-    display: flex;
-    justify-content: end;
- 
-    
-  }
   .a_create{
     text-decoration: none;
+    display: flex;
+    justify-content: end;
     margin-top: 2em;
   }
 
@@ -32,9 +27,11 @@
   gap: 1em;
 }
 
-.btn_delete{
+.delete{
   border-style: none;
   color: blue;
+  overflow: hidden;
+ 
 }
 
 
@@ -61,7 +58,7 @@
 .slist li {
   margin: 10px; 
   padding: 15px;
-   border: 1px solid ;
+   border: 3px  ;
 }
 
 .slist li.active {

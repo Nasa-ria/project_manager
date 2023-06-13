@@ -3,41 +3,28 @@
 
 <div class="container">
   <div class="row justify-content-center">
-    <p class="heading_t">{{$project->name}} </p>
-    <p class="btn_create"><a class="a_create" href="{{ route('task.create')}}">Create Task</a></p>
+    <p class="heading_t mt-5">{{$project->name}} </p>
+    <p class="btn_create"><a class="a_create" href="{{ route('task.create')}}">Add<i class="bi bi-plus-lg" style="font-size: 1em"></i></a></p>
     <p class="heading">Task(s)</p>
     <!-- (A) LOAD CSS + JS -->
-
-   
     <script src="sort-list.js"></script>
     <!-- (B) THE LIST -->
-   
-
     <ul id="sortlist"   >
       @foreach ($sub_tasks as $sub_task)
-   
       <li  >   
-         <input type="checkbox" class="cbox4 " value="fourth_checkbox">
-        <label class="cbox4">
-       
-       {{ $sub_task->priority}} . {{ $sub_task->title }} : {{ $sub_task->note }}
-       <p id="completedMessage" class="completed-text">Completed!</p> 
-        <span class="crud_task">
-          <a class=" a_link" href="{{ route('task-edit',$sub_task->id)}}">Edit </a>
+        <div><strong>{{ $sub_task->priority}} . {{ $sub_task->title }} </strong></div>
+        <small> {{ $sub_task->note }}</small>
+        <span class="crud_task"> 
           <form action="{{ route('task-delete',$sub_task->id) }}" method="POST">
             @csrf
             @method('delete')
-            <button class="btn_delete">Remove</button>
+            <a class=" a_link" href="{{ route('task-edit',$sub_task->id)}}"><i class="bi bi-files"></i> </a>
+            <button class="delete  icon"><i class="bi bi-trash3"></i></button>
           </form>
         </span>
-      </label>
       </li>
- 
-
       @endforeach
     </ul> 
-   
- 
     <!-- (C) CREATE SORTABLE LIST -->
      <script>
       slist(document.getElementById("sortlist"));
@@ -45,12 +32,6 @@
 
   </div>
 </div>
-
-
-
-
-
-
 @endsection
 
 
@@ -126,22 +107,5 @@
         }
       };
     }
-  }
-
-
-
-  function toggleCompleted() {
-            // toggleStrikethrough();
-            toggleDisplay();
-        }
-
-        // function toggleStrikethrough() {
-        //     var textElement = document.getElementById("myText");
-        //     textElement.classList.toggle("completed");
-        // }
-
-        function toggleDisplay() {
-            var completedMessage = document.getElementById("completedMessage");
-            completedMessage.style.display = completedMessage.style.display === "none" ? "block" : "none";
-        }
+  } 
 </script>
