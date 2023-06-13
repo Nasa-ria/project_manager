@@ -9,9 +9,9 @@
     <!-- (A) LOAD CSS + JS -->
     <script src="sort-list.js"></script>
     <!-- (B) THE LIST -->
-    <ul id="sortlist"   >
+    <ul id="task-list"  >
       @foreach ($sub_tasks as $sub_task)
-      <li  >   
+      <li class="task" draggable="true" data-task-id={{ $sub_task->priority}}  data-priority={{ $sub_task->priority}}  >   
         <div><strong>{{ $sub_task->priority}} . {{ $sub_task->title }} </strong></div>
         <small> {{ $sub_task->note }}</small>
         <span class="crud_task"> 
@@ -27,7 +27,7 @@
     </ul> 
     <!-- (C) CREATE SORTABLE LIST -->
      <script>
-      slist(document.getElementById("sortlist"));
+      slist(document.getElementById("task-list"));
     </script>
 
   </div>
@@ -43,69 +43,119 @@
 
 <!-- javaScript for drag and drop -->
 <script>
-  function slist(target) {
-    // (A) SET CSS + GET ALL LIST ITEMS
-    target.classList.add("slist");
-    let items = target.getElementsByTagName("li"),
-      current = null;
+// Function to handle drag start event
+function slist(target) {
+  target.classList.add("slist");
+  let items = target.getElementsByTagName("li"),
+    current = null;
 
-    // (B) MAKE ITEMS DRAGGABLE + SORTABLE
-    for (let i of items) {
-      // (B1) ATTACH DRAGGABLE
-      i.draggable = true;
+  for (let i of items) {
+    i.draggable = true;
 
-      // (B2) DRAG START - YELLOW HIGHLIGHT DROPZONES
-      i.ondragstart = e => {
-        current = i;
-        for (let it of items) {
-          if (it != current) {
-            it.classList.add("hint");
-          }
+    i.ondragstart = e => {
+      current = i;
+      for (let it of items) {
+        if (it != current) {
+          it.classList.add("hint");
         }
-      };
+      }
+    };
 
-      // (B3) DRAG ENTER - RED HIGHLIGHT DROPZONE
-      i.ondragenter = e => {
-        if (i != current) {
-          i.classList.add("active");
-        }
-      };
+    i.ondragenter = e => {
+      if (i != current) {
+        i.classList.add("active");
+      }
+    };
 
-      // (B4) DRAG LEAVE - REMOVE RED HIGHLIGHT
-      i.ondragleave = () => i.classList.remove("active");
+    i.ondragleave = () => i.classList.remove("active");
 
-      // (B5) DRAG END - REMOVE ALL HIGHLIGHTS
-      i.ondragend = () => {
-        for (let it of items) {
-          it.classList.remove("hint");
-          it.classList.remove("active");
-        }
-      };
+    i.ondragend = () => {
+      for (let it of items) {
+        it.classList.remove("hint");
+        it.classList.remove("active");
+      }
+    };
 
-      // (B6) DRAG OVER - PREVENT THE DEFAULT "DROP", SO WE CAN DO OUR OWN
-      i.ondragover = e => e.preventDefault();
+    i.ondragover = e => e.preventDefault();
 
-      // (B7) ON DROP - DO SOMETHING
-      i.ondrop = e => {
-        e.preventDefault();
-        if (i != current) {
-          let currentpos = 0,
-            droppedpos = 0;
-          for (let it = 0; it < items.length; it++) {
-            if (current == items[it]) {
-              currentpos = it;
-            }
-            if (i == items[it]) {
-              droppedpos = it;
-            }
-          }
-          if (currentpos < droppedpos) {
-            i.parentNode.insertBefore(current, i.nextSibling);
-          } else {
-            i.parentNode.insertBefore(current, i);
-          }
-        }
-      };
+    i.ondrop = e => {
+  e.preventDefault();
+  if (i != current) {
+    let currentPriority = current.dataset.priority;
+    let droppedPriority = i.dataset.priority;
+    let currentPos = 0;
+    let droppedPos = 0;
+
+    for (let it = 0; it < items.length; it++) {
+      if (current == items[it]) {
+        currentPos = it;
+      }
+      if (i == items[it]) {
+        droppedPos = it;
+      }
     }
-  } 
+
+    if (currentPos < droppedPos) {
+      let up = i.parentNode.insertBefore(current, i.nextSibling);
+      updatePrioritiesInBackend(up);
+
+      // Update priorities for the remaining tasks
+      for (let j = currentPos + 1; j <= droppedPos; j++) {
+        let task = items[j];
+        task.dataset.priority = parseInt(task.dataset.priority) - 1;
+      }
+    } else {
+      i.parentNode.insertBefore(current, i);
+
+      // Update priorities for the remaining tasks
+      for (let j = droppedPos; j < currentPos; j++) {
+        let task = items[j];
+        task.dataset.priority = parseInt(task.dataset.priority) + 1;
+      }
+    }
+
+    // Update the priorities in the backend
+    updatePrioritiesInBackend();
+  }
+  };
+  }
+}
+
+function updatePrioritiesInBackend() {
+  // Retrieve all the tasks after reordering
+  let tasks = document.querySelectorAll('.slist li');
+
+  // Create an array to store the updated priorities
+  let updatedPriorities = [];
+
+  // Loop through the tasks and extract the updated priorities
+  tasks.forEach(task => {
+    let taskId = task.dataset.taskId;
+    let priority = task.dataset.priority;
+    updatedPriorities.push({ taskId, priority });
+  });
+
+  // Send an AJAX request to update the priorities in the backend
+  fetch('/task/updatePriorities', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({ priorities: updatedPriorities })
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Priorities updated successfully.');
+    } else {
+      console.error('Failed to update priorities.');
+    }
+  })
+  .catch(error => {
+    console.error('An error occurred while updating priorities:', error);
+  });
+}
+
+
 </script>
+

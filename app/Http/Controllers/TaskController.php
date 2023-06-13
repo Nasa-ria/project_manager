@@ -15,10 +15,15 @@ class TaskController extends Controller
      * Display a listing of the resource.
      */
 
-      public function index(){
-        return view('task.view');
+      // public function index(){
+      //   return view('task.view');
+      // }
+      public function index()
+      {
+          $tasks = Task::orderBy('priority')->get();
+  
+          return view('tasks.index', ['tasks' => $tasks]);
       }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -98,14 +103,43 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
-        Task::destroy($id);
-       // redirecting to a path the has has 
-       return redirect()->back();
+      //   Task::destroy($id);
+      //  // redirecting to a path the has has 
+      //  return redirect()->back();
         
+      // Retrieve the task to be deleted
+    $task = Task::findOrFail($id);
 
+    // Delete the task from the database
+    $task->delete();
+
+    // Retrieve the remaining tasks, sorted by priority
+    $remainingTasks = Task::orderBy('priority')->get();
+
+    // Update the priority of the remaining tasks
+    $newPriority = 1;
+    foreach ($remainingTasks as $task) {
+        $task->priority = $newPriority++;
+        $task->save();
       
     }
 
-   
+    return redirect()->back();
+
+}
+
+
+
+public function updatePriorities(Request $request){
+$remainingTasks = Task::orderBy('priority')->get();
+
+    // Update the priority of the remaining tasks
+    $newPriority = 1;
+    foreach ($remainingTasks as $task) {
+        $task->priority = $newPriority++;
+        $task->save();
+}
+}
+
 
 }

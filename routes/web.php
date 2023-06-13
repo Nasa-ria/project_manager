@@ -26,6 +26,7 @@ Route::get('/search', [ProjectController::class, 'search'])->name('search');
 // Route::resource('task', TaskController::class);
 Route::get('/task/create', [TaskController::class, 'create'])->name('task.create');
 Route::post('/task/store', [TaskController::class, 'store'])->name('task.store');
+Route::post('/task/updatePriorities', [TaskController::class, 'updatePriorities'])->name('task.updatePriorities');
 Route::post('/task/index', [TaskController::class, 'index'])->name('task.index');
 Route::get('/task/edit/{id}', [TaskController::class, 'edit'])->name('task-edit');
 Route::post('/task/update/{id}', [TaskController::class, 'Update'])->name('task-update');

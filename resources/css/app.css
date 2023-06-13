@@ -91,3 +91,16 @@ input[type=checkbox]:checked + label {
   color: green;
   font-weight: bold;
 }
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li.task {
+  cursor: move;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
+}
