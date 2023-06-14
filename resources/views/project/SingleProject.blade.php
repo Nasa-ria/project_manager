@@ -11,18 +11,22 @@
     <!-- (B) THE LIST -->
     <ul id="task-list"  >
       @foreach ($sub_tasks as $sub_task)
-      <li class="task" draggable="true" data-task-id={{ $sub_task->priority}}  data-priority={{ $sub_task->priority}}  >   
-        <div><strong>{{ $sub_task->priority}} . {{ $sub_task->title }} </strong></div>
-        <small> {{ $sub_task->note }}</small>
-        <span class="crud_task"> 
-          <form action="{{ route('task-delete',$sub_task->id) }}" method="POST">
-            @csrf
-            @method('delete')
-            <a class=" a_link" href="{{ route('task-edit',$sub_task->id)}}"><i class="bi bi-files"></i> </a>
-            <button class="delete  icon"><i class="bi bi-trash3"></i></button>
-          </form>
+      <li class="task" draggable="true" data-task-id="{{ $sub_task->priority }}" data-priority="{{ $sub_task->priority }}">
+        <input type="checkbox" onchange="toggleTask(this)" >
+        <span class="task-name">
+            <strong>{{ $sub_task->priority }}. {{ $sub_task->title }}</strong><br>    
+            <small>{{ $sub_task->note }}</small>
         </span>
-      </li>
+        <span class="crud_task">
+            <form action="{{ route('task-delete', $sub_task->id) }}" method="POST">
+                @csrf
+                @method('delete')
+                <a class="a_link" href="{{ route('task-edit',$sub_task->id) }}"><i class="bi bi-files"></i></a>
+                <button class="delete icon"><i class="bi bi-trash3"></i></button>
+            </form>
+        </span>
+      
+    </li>
       @endforeach
     </ul> 
     <!-- (C) CREATE SORTABLE LIST -->
@@ -39,10 +43,47 @@
 
 
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- javaScript for drag and drop -->
 <script>
+  
+    
+        $(document).ready(function() {
+            $('.task input[type="checkbox"]').on('change', function() {
+                var taskElement = $(this).closest('.task');
+                var taskName = taskElement.find('.task-name');
+                var editLink = taskElement.find('.a_link');
+                var deleteButton = taskElement.find('.delete');
+
+                if ($(this).is(':checked')) {
+                    taskName.addClass('completed');
+                    disableCRUD(editLink, deleteButton);
+                } else {
+                    taskName.removeClass('completed');
+                    enableCRUD(editLink, deleteButton);
+                }
+            });
+
+            function disableCRUD(editLink, deleteButton) {
+                editLink.addClass('disabled');
+                editLink.removeAttr('href');
+                deleteButton.prop('disabled', true);
+            }
+
+            function enableCRUD(editLink, deleteButton) {
+                editLink.removeClass('disabled');
+                var taskId = editLink.data('taskId');
+                editLink.attr('href', '/task-edit/' + taskId);
+                deleteButton.prop('disabled', false);
+            }
+        });
+
+
+       
+ 
+
+
 // Function to handle drag start event
 function slist(target) {
   target.classList.add("slist");
